@@ -4,8 +4,10 @@
 
 const express = require('express');
 const moradorController = require('../controllers/moradoresController');
+const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
+router.use(protect)
 
 /**
  * @swagger

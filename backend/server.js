@@ -46,7 +46,7 @@ app.use(errorMiddleware);
 async function startServer() {
   try {
     // Sincroniza os modelos com o banco de dados
-    await sequelize.sync({ alter: process.env.NODE_ENV === "development" });
+    await sequelize.sync({ alter: true });
     logger.info("Banco de dados sincronizado com sucesso");
 
     // Inicia o servidor
