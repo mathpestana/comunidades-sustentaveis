@@ -1,43 +1,51 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth.config');
+const { Morador } = require('../models');
+const config = require('../config/config');
+const { ApiError } = require('./errorMiddleware');
+const logger = require('../utils/logger');
 
 /**
- * Middleware para verificar autenticação via JWT
+ * Middleware para verificar a autenticação JWT
  * @param {Object} req - Objeto de requisição Express
  * @param {Object} res - Objeto de resposta Express
  * @param {Function} next - Função next do Express
  */
-const authMiddleware = (req, res, next) => {
-  // Obtém o token do header Authorization
-  const authHeader = req.headers.authorization;
+const protect = async (req, res, next) => {
+  let token;
 
-  // Verifica se o token foi fornecido
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Token não fornecido' });
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      // Extrai o token do cabeçalho 'Bearer <token>'
+      token = req.headers.authorization.split(' ')[1];
+
+      const decoded = jwt.verify(token, config.jwt.secret);
+
+      // Encontra o morador pelo ID que está dentro do token
+      // e exclui a senha do retorno
+      req.user = await Morador.findByPk(decoded.id, {
+        attributes: { exclude: ['senha'] }
+      });
+
+      // Garante que o usuário do token ainda existe no banco
+      if (!req.user) {
+        return next(new ApiError(401, 'O usuário pertencente a este token não existe mais.'));
+      }
+
+      // Se tudo deu certo, vá para a próxima etapa (a rota em si)
+      next();
+    } catch (error) {
+      logger.error(`Erro de autenticação: ${error.message}`);
+
+      const apiError = new ApiError(401, 'Não autorizado, token inválido ou expirado.');
+      
+      return next(apiError);
+    }
   }
 
-  // O token vem no formato: "Bearer <token>"
-  const parts = authHeader.split(' ');
-
-  if (parts.length !== 2) {
-    return res.status(401).json({ error: 'Token mal formatado' });
-  }
-
-  const [scheme, token] = parts;
-
-  // Verifica se o token começa com "Bearer"
-  if (!/^Bearer$/i.test(scheme)) {
-    return res.status(401).json({ error: 'Token mal formatado' });
-  }
-
-  // Verifica se o token é válido
-  try {
-    const decoded = jwt.verify(token, config.secret);
-    req.userId = decoded.id;
-    return next();
-  } catch (err) {
-    return res.status(401).json({ error: 'Token inválido' });
+  // Se não encontrou nenhum token
+  if (!token) {
+    return next(new ApiError(401, 'Não autorizado, nenhum token fornecido.'));
   }
 };
 
-module.exports = authMiddleware; 
+module.exports = { protect };

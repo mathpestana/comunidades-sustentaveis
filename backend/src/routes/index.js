@@ -9,6 +9,7 @@ const iniciativaRoutes = require("./iniciativaRoutes")
 const metricaRoutes = require("./metricaRoutes")
 const dashboardRoutes = require("./dashboardRoutes")
 const docsRoutes = require("./docsRoutes")
+const authRoutes = require("./authRoutes")
 
 const router = express.Router()
 
@@ -19,6 +20,7 @@ router.use("/iniciativas", iniciativaRoutes)
 router.use("/metricas", metricaRoutes)
 router.use("/dashboard", dashboardRoutes)
 router.use("/docs", docsRoutes)
+router.use("/auth", authRoutes)
 
 // Rota para verificar o status da API
 router.get("/status", (req, res) => {

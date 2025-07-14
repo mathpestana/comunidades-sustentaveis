@@ -40,6 +40,15 @@ module.exports = (sequelize) => {
           },
         },
       },
+      senha: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "A senha é obrigatória",
+          },
+        },
+      },
       telefone: {
         type: DataTypes.STRING,
         allowNull: true,
