@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const config = require("../config/config")
 const logger = require("../utils/logger")
-const { ApiError } = require("../middlewares/errorMiddleware")
+const ApiError = require("../middlewares/errorMiddleware")
 
 /**
  * Registra um novo morador
