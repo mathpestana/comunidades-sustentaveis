@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { Morador } = require('../models');
 const config = require('../config/config');
-const { ApiError } = require('./errorMiddleware');
+const ApiError = require('./errorMiddleware');
 const logger = require('../utils/logger');
 
 /**
@@ -25,7 +25,7 @@ const protect = async (req, res, next) => {
       req.user = await Morador.findByPk(decoded.id, {
         attributes: { exclude: ['senha'] }
       });
-
+      //Rescrever este como
       // Garante que o usuário do token ainda existe no banco
       if (!req.user) {
         return next(new ApiError(401, 'O usuário pertencente a este token não existe mais.'));

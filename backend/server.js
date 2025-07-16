@@ -9,7 +9,7 @@ const { sequelize } = require("./src/models");
 const routes = require("./src/routes");
 const loggerMiddleware = require("./src/middlewares/loggerMiddleware");
 const corsMiddleware = require("./src/middlewares/corsMiddleware");
-const errorMiddleware = require("./src/middlewares/errorMiddleware");
+const ApiError = require("./src/middlewares/errorMiddleware");
 const swaggerSetup = require("./src/docs/swagger");
 const logger = require("./src/utils/logger");
 
@@ -25,6 +25,10 @@ app.use(corsMiddleware); // Configuração do CORS
 app.use(express.json()); // Parser para JSON
 app.use(loggerMiddleware); // Logger personalizado
 
+// Middleware para tratamento de erros
+
+app.use(new ApiError(logger).handle);
+
 // Configuração do Swagger
 swaggerSetup(app);
 
@@ -39,8 +43,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// Middleware para tratamento de erros
-app.use(errorMiddleware);
+
 
 // Inicialização do servidor
 async function startServer() {
