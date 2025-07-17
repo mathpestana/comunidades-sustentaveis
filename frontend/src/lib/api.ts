@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 30000, // Aumentado para 30 segundos para lidar com atrasos no Render
   headers: {
     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ api.interceptors.response.use(
 // Funções para Comunidades
 export const comunidadesApi = {
   // Listar todas as comunidades
-  getAll: () => api.get('/comunidades'), // Removido o prefixo /api para testar
+  getAll: () => api.get('/api/comunidades'), // Removido o prefixo /api para testar
   
   // Buscar comunidade por ID
   getById: (id: number) => api.get(`/api/comunidades/${id}`),
@@ -63,7 +63,7 @@ export const comunidadesApi = {
 
 // Funções para Moradores
 export const moradoresApi = {
-  getAll: () => api.get('/moradores'),
+  getAll: () => api.get('/api/moradores'),
   getById: (id: number) => api.get(`/api/moradores/${id}`),
   create: (data: any) => api.post('/api/moradores', data),
   update: (id: number, data: any) => api.put(`/api/moradores/${id}`, data),
@@ -91,10 +91,10 @@ export const metricasApi = {
 // Funções para Autenticação
 export const authApi = {
   login: (email: string, senha: string) => 
-    api.post('/auth/login', { email, senha }),
+    api.post('/api/auth/login', { email, senha }),
   
   register: (nome: string, email: string, senha: string, comunidadeId: number) => 
-    api.post('/auth/register', { nome, email, senha, comunidadeId }),
+    api.post('/api/auth/register', { nome, email, senha, comunidadeId }),
 };
 
 // Funções para Dashboard
@@ -105,7 +105,7 @@ export const dashboardApi = {
 // Função para testar conectividade
 export const testConnection = async () => {
   try {
-    const response = await api.get('/comunidades'); // Ajustado para /comunidades
+    const response = await api.get('/api/comunidades'); // Ajustado para /comunidades
     return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error };

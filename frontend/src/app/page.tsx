@@ -204,7 +204,7 @@ export default function HomePage() {
             </span>
           </div>
           <p className="text-gray-400">
-            © 2024 Sistema de Comunidades. Desenvolvido com ❤️ para comunidades.
+            © {new Date().getFullYear()} Sistema de Comunidades. Desenvolvido com ❤️ para comunidades.
           </p>
         </div>
       </footer>

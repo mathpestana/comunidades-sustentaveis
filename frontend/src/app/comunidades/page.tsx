@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { comunidadesApi } from '@/lib/api';
+import Link from 'next/link';
 
 // Tipos
 interface Comunidade {
@@ -187,12 +188,14 @@ export default function ComunidadesPage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-lg">🌱</span>
-                </div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                  Comunidades
-                </h1>
+                <Link href="/dashboard">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-lg">🌱</span>
+                  </div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                    Comunidades
+                  </h1>
+                </Link>
               </div>
               <span className="bg-gradient-to-r from-green-100 to-blue-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
                 {comunidades.length} comunidades
