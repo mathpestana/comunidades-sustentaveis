@@ -3,29 +3,37 @@ import { MetricaCard } from './metricasCard';
 import { Plus } from 'lucide-react';
 import { MetricaForm } from './metricasForm';
 import { Metrica } from '@/types/metrica';
+import { ConfirmationModal } from './confirmationModal';
 
 interface MetricasListProps {
-  metricas: Metrica[];
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-  loading?: boolean;
-  error?: string;
+    metricas: Metrica[];
+    onEdit: (id: number) => void;
+    onDelete: (id: number) => void;
+    loading?: boolean;
+    error?: string;
 }
 
-export const MetricasList = ({ 
-  metricas, 
-  onEdit, 
-  onDelete,
-  loading,
-  error 
+export const MetricasList = ({
+    metricas,
+    onEdit,
+    onDelete,
+    loading,
+    error
 }: MetricasListProps) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingMetrica, setEditingMetrica] = useState<number | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [metricToDelete, setMetricToDelete] = useState<number | null>(null);
 
-    const handleDelete = async (id: number) => {
-        const confirmDelete = confirm('Tem certeza que deseja excluir esta métrica?');
-        if (confirmDelete) {
-            onDelete(id);
+    const handleDeleteClick = (id: number) => {
+        setMetricToDelete(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (metricToDelete) {
+            onDelete(metricToDelete);
+            setMetricToDelete(null);
         }
     };
 
@@ -66,6 +74,16 @@ export const MetricasList = ({
                 />
             )}
 
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Confirmar Exclusão"
+                message="Tem certeza que deseja excluir esta métrica? Esta ação não pode ser desfeita."
+                confirmText="Excluir"
+                cancelText="Cancelar"
+            />
+
             {metricas.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                     Nenhuma métrica encontrada.
@@ -80,7 +98,7 @@ export const MetricasList = ({
                                 setEditingMetrica(metrica.id);
                                 setIsFormOpen(true);
                             }}
-                            onDelete={() => handleDelete(metrica.id)}
+                            onDelete={() => handleDeleteClick(metrica.id)}
                         />
                     ))}
                 </div>
