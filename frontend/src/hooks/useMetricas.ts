@@ -10,15 +10,15 @@ export const useMetricas = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/metricas');
-      
+
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.status === 'success') {
         setMetricas(data.data);
       } else {
@@ -37,23 +37,23 @@ export const useMetricas = () => {
       const response = await fetch(`/api/metricas/${id}`, {
         method: 'DELETE',
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message || 'Erro ao deletar métrica');
       }
-      
+
       if (data.status === 'success') {
         setMetricas(metricas.filter(metrica => metrica.id !== id));
         return { success: true };
       }
-      
+
       throw new Error(data.message || 'Erro ao deletar métrica');
     } catch (err) {
       console.error('Erro ao deletar métrica:', err);
-      return { 
-        success: false, 
+      return {
+        success: false,
         message: err instanceof Error ? err.message : 'Erro desconhecido'
       };
     }
@@ -63,5 +63,13 @@ export const useMetricas = () => {
     fetchMetricas();
   }, []);
 
-  return { metricas, loading, error, fetchMetricas, deleteMetrica };
+  const addMetrica = (newMetrica: Metrica) => {
+    setMetricas(prev => [...prev, newMetrica]);
+  };
+
+  const updateMetrica = (updatedMetrica: Metrica) => {
+    setMetricas(prev => prev.map(m => m.id === updatedMetrica.id ? updatedMetrica : m));
+  };
+
+  return { metricas, loading, error, fetchMetricas, deleteMetrica, addMetrica, updateMetrica };
 };

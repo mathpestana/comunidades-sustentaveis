@@ -12,7 +12,6 @@ import { Metrica } from '@/types/metrica';
 
 export default function MetricasPage() {
   const { metricas, loading, error, deleteMetrica, fetchMetricas } = useMetricas();
-  const [localMetricas, setLocalMetricas] = useState<Metrica[]>([]);
   const [filters, setFilters] = useState({
     search: '',
     iniciativa: '',
@@ -25,14 +24,13 @@ export default function MetricasPage() {
   }, []);
 
   useEffect(() => {
-    setLocalMetricas(metricas);
-  }, [metricas]);
+    const handleUpdate = () => {
+      fetchMetricas();
+    };
 
-  useEffect(() => {
-    const handleUpdate = () => fetchMetricas();
     window.addEventListener('metricasUpdated', handleUpdate);
     return () => window.removeEventListener('metricasUpdated', handleUpdate);
-  }, []);
+  }, [fetchMetricas]);
 
   const handleFilterChange = (newFilters: { search?: string; iniciativa?: string; tipo?: string }) => {
     setFilters(prev => ({ ...prev, ...newFilters }));

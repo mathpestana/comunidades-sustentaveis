@@ -5,7 +5,7 @@ import { useMetricas } from './useMetricas';
 export const useMetricaForm = (metricaId?: number | null, onSuccess?: () => void) => {
   const [loading, setLoading] = useState(false);
   const [metrica, setMetrica] = useState<Metrica | null>(null);
-  const { fetchMetricas } = useMetricas();
+  const { addMetrica, updateMetrica, fetchMetricas } = useMetricas();
 
   const API_URL = 'http://localhost:3000/api/metricas';
 
@@ -51,6 +51,11 @@ export const useMetricaForm = (metricaId?: number | null, onSuccess?: () => void
       }
 
       fetchMetricas();
+      if (metricaId) {
+        updateMetrica(data.data);
+      } else {
+        addMetrica(data.data);
+      }
       onSuccess?.();
 
       return { success: true, data };
