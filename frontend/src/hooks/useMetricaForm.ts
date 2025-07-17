@@ -46,14 +46,24 @@ export const useMetricaForm = (metricaId?: number | null, onSuccess?: () => void
 
       const data = await response.json();
 
-      if (data.success) {
-        fetchMetricas();
-        onSuccess?.();
-      } else {
+      if (!response.ok) {
         throw new Error(data.message || 'Erro ao salvar métrica');
       }
+
+      fetchMetricas();
+      onSuccess?.();
+
+      return { success: true, data };
+
     } catch (error) {
+      if (error instanceof Error && error.message.includes('sucesso')) {
+        fetchMetricas();
+        onSuccess?.();
+        return { success: true };
+      }
+
       console.error('Erro:', error);
+      throw error;
     } finally {
       setLoading(false);
     }

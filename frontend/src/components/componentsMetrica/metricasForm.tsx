@@ -11,7 +11,12 @@ interface MetricaFormProps {
 }
 
 export const MetricaForm = ({ onClose, metricaId }: MetricaFormProps) => {
-  const { onSubmit, loading, metrica } = useMetricaForm(metricaId, onClose);
+  const { onSubmit, loading, metrica } = useMetricaForm(metricaId, () => {
+    onClose();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('metricasUpdated'));
+    }
+  });
 
   const {
     register,

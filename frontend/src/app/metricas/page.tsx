@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMetricas } from '@/hooks/useMetricas';
 import { MetricasHeader } from '@/components/componentsMetrica/metricasHeader';
 import { MetricasFilters } from '@/components/componentsMetrica/metricasFilters';
@@ -8,9 +8,11 @@ import { MetricasStats } from '@/components/componentsMetrica/metricasStats';
 import { MetricasList } from '@/components/componentsMetrica/metricasLists';
 import { MetricasPagination } from '@/components/componentsMetrica/metricasPagination';
 import { prepareChartData, filterMetricas } from "@/lib/validations/metrica";
+import { Metrica } from '@/types/metrica';
 
 export default function MetricasPage() {
-  const { metricas, loading, error } = useMetricas();
+  const { metricas, loading, error, deleteMetrica, fetchMetricas } = useMetricas();
+  const [localMetricas, setLocalMetricas] = useState<Metrica[]>([]);
   const [filters, setFilters] = useState({
     search: '',
     iniciativa: '',
@@ -18,9 +20,30 @@ export default function MetricasPage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {
+    fetchMetricas();
+  }, []);
+
+  useEffect(() => {
+    setLocalMetricas(metricas);
+  }, [metricas]);
+
+  useEffect(() => {
+    const handleUpdate = () => fetchMetricas();
+    window.addEventListener('metricasUpdated', handleUpdate);
+    return () => window.removeEventListener('metricasUpdated', handleUpdate);
+  }, []);
+
   const handleFilterChange = (newFilters: { search?: string; iniciativa?: string; tipo?: string }) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
     setCurrentPage(1);
+  };
+
+  const handleDelete = async (id: number) => {
+    const result = await deleteMetrica(id);
+    if (result.success) {
+      fetchMetricas();
+    }
   };
 
   if (loading) return (
@@ -38,7 +61,6 @@ export default function MetricasPage() {
   );
 
   const filteredMetricas = filterMetricas(metricas, filters);
-  const chartData = prepareChartData(filteredMetricas);
   const itemsPerPage = 6;
   const totalPages = Math.ceil(filteredMetricas.length / itemsPerPage);
   const paginatedMetricas = filteredMetricas.slice(
@@ -69,7 +91,7 @@ export default function MetricasPage() {
           <MetricasList
             metricas={paginatedMetricas}
             onEdit={(id) => console.log('Editar', id)}
-            onDelete={(id) => console.log('Deletar', id)}
+            onDelete={handleDelete}
             loading={loading}
             error={error}
           />
