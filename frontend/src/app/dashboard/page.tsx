@@ -24,14 +24,16 @@ export default function DashboardPage() {
             
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">
-                Olá, {user?.nome}
+                {user ? `Olá, ${user?.nome}` : 'Olá, morador!'}
               </span>
               <button
                 onClick={logout}
                 className="flex items-center text-gray-600 hover:text-red-600 transition-colors"
               >
-                <LogOut className="h-4 w-4 mr-1" />
-                Sair
+                <Link href={"/"}>
+                  <LogOut className="h-4 w-4 mr-1" />
+                  Sair
+                </Link>
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { WrenchScrewdriverIcon, ClockIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -21,12 +22,12 @@ export default function HomePage() {
         </div>
 
         <button>
-          <a
+          <Link
             href="/dashboard"
             className="mt-8 inline-flex items-center px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors duration-200"
           >
             Voltar para a Página Inicial
-          </a>
+          </Link>
         </button>
 
       </div>

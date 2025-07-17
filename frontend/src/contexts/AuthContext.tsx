@@ -38,8 +38,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error("Falha na verificação de autenticação:", error);
         if (axios.isAxiosError(error)) {
           if (error.response) {
-            console.error("Erro na resposta da API:", error.response.data);
-            console.error("Status do erro:", error.response.status);
+            console.log("Erro na resposta da API:", error.response.data);
+            console.log("Status do erro:", error.response.status);
 
             if (error.response.status === 401 || error.response.status === 403) {
               console.log("Token inválido ou expirado. Realizando logout.");
