@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
-import { loginSchema, LoginFormData } from '@/lib/validations/auth';
+import { loginSchema, LoginFormData } from '@/lib/schemas';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 export default function LoginForm() {

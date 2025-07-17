@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
   
   // Rotas que requerem autenticação
-  const protectedRoutes = ['/dashboard', '/comunidades', '/iniciativas', '/moradores', '/metricas']  // '/dashboard' , '/comunidades', '/iniciativas', '/moradores', '/metricas'
+  const protectedRoutes = ['/dashboard',  '/iniciativas', '/metricas']  // '/dashboard' , '/comunidades', '/iniciativas', '/moradores', '/metricas'
   
   // Rotas que só podem ser acessadas por usuários não autenticados
   const authRoutes = ['/login', '/register',]    //originais sao login e register 

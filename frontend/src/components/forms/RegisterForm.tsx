@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
-import { registerSchema, RegisterFormData } from '@/lib/validations/auth';
+import { registerSchema, RegisterFormData } from '@/lib/schemas';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 
 export default function RegisterForm() {
