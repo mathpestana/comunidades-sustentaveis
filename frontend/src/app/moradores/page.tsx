@@ -1,7 +1,8 @@
 'use client';
 
 import { useMoradores } from '@/hooks/useMoradores';
-// import MoradorForm from '@/components/forms/MoradorForm';
+import MoradorForm from '@/components/forms/MoradorForm';
+import MoradorCard from '@/components/cards/MoradorCard';
 import { Users } from 'lucide-react';
 
 export default function MoradoresPage() {
@@ -15,7 +16,7 @@ export default function MoradoresPage() {
       </h1>
 
       <div className="mb-10">
-        {/* <MoradorForm onSuccess={refetch} /> */}
+        <MoradorForm onSuccess={refetch} />
       </div>
 
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Lista de Moradores</h2>
@@ -26,15 +27,12 @@ export default function MoradoresPage() {
         <p>Nenhum morador cadastrado.</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {moradores.map((morador: any) => (
-            <div key={morador.id} className="bg-white p-4 rounded-lg shadow">
-              <h3 className="text-xl font-semibold text-gray-800">{morador.nome}</h3>
-              <p className="text-gray-600">Idade: {morador.idade}</p>
-              <p className="text-gray-600">Comunidade: {morador.comunidade}</p>
-            </div>
+          {moradores.map((morador) => (
+            <MoradorCard key={morador.id} morador={morador} />
           ))}
         </div>
       )}
     </div>
   );
 }
+
