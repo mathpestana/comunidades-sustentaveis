@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { loginSchema, LoginFormData } from '@/lib/schemas';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { AxiosError } from 'axios';
+
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -27,10 +29,9 @@ export default function LoginForm() {
     
     try {
       await login(data.email, data.password);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao fazer login');
-    } finally {
-      setIsLoading(false);
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ message: string }>;
+      setError(error.response?.data?.message || 'Erro ao fazer login');
     }
   };
 

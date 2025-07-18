@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { registerSchema, RegisterFormData } from '@/lib/schemas';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { AxiosError } from 'axios';
+
 
 export default function RegisterForm() {
   const { register: registerUser } = useAuth();
@@ -28,8 +30,9 @@ export default function RegisterForm() {
     
     try {
       await registerUser(data.nome, data.email, data.password);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao criar conta');
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ message: string }>;
+      setError(error.response?.data?.message || 'Erro ao criar conta');
     } finally {
       setIsLoading(false);
     }

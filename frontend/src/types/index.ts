@@ -1,4 +1,4 @@
-export interface Comunidade {
+export interface ComunidadeData {
   id: number;
   nome: string;
   localizacao: string;
@@ -9,7 +9,7 @@ export interface Comunidade {
   updatedAt: string;
 }
 
-export interface Morador {
+export interface MoradorData {
   id: number;
   nome: string;
   email: string;
@@ -17,12 +17,12 @@ export interface Morador {
   endereco?: string;
   dataNascimento?: string;
   comunidadeId: number;
-  comunidade?: Comunidade;
+  comunidade?: ComunidadeData;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Iniciativa {
+export interface IniciativaData {
   id: number;
   titulo: string;
   descricao: string;
@@ -32,13 +32,13 @@ export interface Iniciativa {
   dataFim?: string;
   responsavelId: number;
   comunidadeId: number;
-  responsavel?: Morador;
-  comunidade?: Comunidade;
+  responsavel?: MoradorData;
+  comunidade?: ComunidadeData;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Metrica {
+export interface MetricaData {
   id: number;
   tipo: string;
   valor: number;
@@ -47,8 +47,8 @@ export interface Metrica {
   comunidadeId: number;
   iniciativaId?: number;
   observacoes?: string;
-  comunidade?: Comunidade;
-  iniciativa?: Iniciativa;
+  comunidade?: ComunidadeData;
+  iniciativa?: IniciativaData;
   createdAt: string;
   updatedAt: string;
 }
@@ -58,7 +58,7 @@ export interface User {
   nome: string;
   email: string;
   comunidadeId: number;
-  comunidade?: Comunidade;
+  comunidade?: ComunidadeData;
 }
 
 export interface AuthResponse {
@@ -84,5 +84,5 @@ export interface DashboardMetrics {
   totalIniciativas: number;
   totalMetricas: number;
   iniciativasAtivas: number;
-  metricasRecentes: Metrica[];
+  metricasRecentes: MetricaData[];
 }

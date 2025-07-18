@@ -17,7 +17,7 @@ interface Comunidade {
 }
 
 export default function ComunidadesPage() {
- Ramal: 1
+
   const [comunidades, setComunidades] = useState<Comunidade[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +59,7 @@ export default function ComunidadesPage() {
       }
       
       setComunidades(comunidadesData);
-    } catch (err: any) {
+    } catch (err: any) {                                                                      //precisa arrumar este any para fazer o deploy
       console.error('Erro ao buscar comunidades:', err);
       const errorMessage = err.response?.status === 401
         ? 'Não autorizado. Por favor, faça login para acessar as comunidades.'

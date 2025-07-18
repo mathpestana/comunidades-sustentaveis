@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ComunidadeData, MoradorData, IniciativaData, MetricaData } from '@/types'; //necessario arrumar os types e seus usos para conseguir fazer o build do deploy
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,

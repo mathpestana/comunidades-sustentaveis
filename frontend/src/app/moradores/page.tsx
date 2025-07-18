@@ -34,7 +34,7 @@ export default function MoradoresPage() {
 
     // Corrigido: acessar o array dentro de response.data.data
     setMoradores(Array.isArray(response.data.data) ? response.data.data : []);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Erro ao buscar moradores:', err);
     setError('Erro ao carregar moradores. Verifique sua conexão.');
   } finally {
@@ -62,8 +62,8 @@ export default function MoradoresPage() {
       if (selectedMorador?.id === id) {
         setSelectedMorador(null);
       }
-    } catch (err) {
-      alert('Erro ao deletar morador');
+    } catch (error) {
+      console.error('Erro ao deletar morador:', error);
     }
   };
 
