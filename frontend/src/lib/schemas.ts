@@ -66,19 +66,22 @@ export const iniciativaSchema = z.object({
 });
 
 export const metricaSchema = z.object({
-  tipo: z.string().min(1, 'Tipo é obrigatório'),
-  valor: z.number().min(0, 'Valor deve ser positivo'),
+  iniciativaId: z.number().min(1, 'ID da iniciativa é obrigatório'),
+  tipo: z.string().min(1, 'Tipo da métrica é obrigatório'),
+  valor: z.number(),
   unidade: z.string().min(1, 'Unidade é obrigatória'),
-  dataColeta: z.string().min(1, 'Data de coleta é obrigatória'),
-  comunidadeId: z.number().min(1, 'Selecione uma comunidade'),
-  iniciativaId: z.number().optional(),
-  observacoes: z.string().optional(),
+  dataRegistro: z.string()
+  .min(1, 'Data de registro é obrigatória')
+  .transform(date => {
+    const [day, month, year] = date.split('/');
+    return `${year}-${month}-${day}`;
+  }),
 });
 
 
 export type ComunidadeData = z.infer<typeof comunidadeSchema>;
 export type MoradorData = z.infer<typeof moradorSchema>;
 export type IniciativaData = z.infer<typeof iniciativaSchema>;
-export type MetricaData = z.infer<typeof metricaSchema>;
+export type MetricaSchema = z.infer<typeof metricaSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;

@@ -38,21 +38,6 @@ export interface IniciativaData {
   updatedAt: string;
 }
 
-export interface MetricaData {
-  id: number;
-  tipo: string;
-  valor: number;
-  unidade: string;
-  dataColeta: string;
-  comunidadeId: number;
-  iniciativaId?: number;
-  observacoes?: string;
-  comunidade?: ComunidadeData;
-  iniciativa?: IniciativaData;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface User {
   id: number;
   nome: string;
@@ -84,5 +69,4 @@ export interface DashboardMetrics {
   totalIniciativas: number;
   totalMetricas: number;
   iniciativasAtivas: number;
-  metricasRecentes: MetricaData[];
 }

@@ -24,18 +24,44 @@ interface MoradorData {
   // Adicione outros campos conforme necessário
 }
 
-interface IniciativaData {
-  nome: string;
+export interface Iniciativa {
+  id: number;
+  titulo: string;
   descricao: string;
+  categoria: string;
+  dataInicio: string;
+  dataFim: string;
+  status: string;
   comunidadeId: number;
-  // Adicione outros campos conforme necessário
+  responsavelId: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-interface MetricaData {
-  nome: string;
+export interface Metrica {
+  id: number;
+  iniciativaId: number;
+  tipo: string;
   valor: number;
-  comunidadeId: number;
-  // Adicione outros campos conforme necessário
+  unidade: string;
+  dataRegistro: string;
+  createdAt?: string;
+  updatedAt?: string;
+  iniciativa?: Iniciativa;
+}
+
+export type MetricaFormData = {
+  iniciativaId: number;
+  tipo: string;
+  valor: number;
+  unidade: string;
+  dataRegistro: string;
+};
+
+export interface MetricaResponse {
+  success: boolean;
+  data: Metrica | Metrica[];
+  message?: string;
 }
 
 // Interceptor para adicionar token de autenticação
@@ -77,16 +103,16 @@ api.interceptors.response.use(
 export const comunidadesApi = {
   // Listar todas as comunidades
   getAll: () => api.get('/api/comunidades'), // Removido o prefixo /api para testar
-  
+
   // Buscar comunidade por ID
   getById: (id: number) => api.get(`/api/comunidades/${id}`),
-  
+
   // Criar nova comunidade
   create: (data: ComunidadeData) => api.post('/api/comunidades', data),
-  
+
   // Atualizar comunidade
   update: (id: number, data: Partial<ComunidadeData>) => api.put(`/api/comunidades/${id}`, data),
-  
+
   // Deletar comunidade
   delete: (id: number) => api.delete(`/api/comunidades/${id}`),
 };
@@ -104,8 +130,8 @@ export const moradoresApi = {
 export const iniciativasApi = {
   getAll: () => api.get('/api/iniciativas'),
   getById: (id: number) => api.get(`/api/iniciativas/${id}`),
-  create: (data: IniciativaData) => api.post('/api/iniciativas', data),
-  update: (id: number, data: Partial<IniciativaData>) => api.put(`/api/iniciativas/${id}`, data),
+  create: (data: Iniciativa) => api.post('/api/iniciativas', data),
+  update: (id: number, data: Partial<Iniciativa>) => api.put(`/api/iniciativas/${id}`, data),
   delete: (id: number) => api.delete(`/api/iniciativas/${id}`),
 };
 
@@ -113,17 +139,17 @@ export const iniciativasApi = {
 export const metricasApi = {
   getAll: () => api.get('/api/metricas'),
   getById: (id: number) => api.get(`/api/metricas/${id}`),
-  create: (data: MetricaData) => api.post('/api/metricas', data),
-  update: (id: number, data: Partial<MetricaData>) => api.put(`/api/metricas/${id}`, data),
+  create: (data: MetricaFormData) => api.post<Metrica>('/api/metricas', data),
+  update: (id: number, data: Partial<Metrica>) => api.put(`/api/metricas/${id}`, data),
   delete: (id: number) => api.delete(`/api/metricas/${id}`),
 };
 
 // Funções para Autenticação
 export const authApi = {
-  login: (email: string, senha: string) => 
+  login: (email: string, senha: string) =>
     api.post('/api/auth/login', { email, senha }),
-  
-  register: (nome: string, email: string, senha: string, comunidadeId: number) => 
+
+  register: (nome: string, email: string, senha: string, comunidadeId: number) =>
     api.post('/api/auth/register', { nome, email, senha, comunidadeId }),
 };
 
