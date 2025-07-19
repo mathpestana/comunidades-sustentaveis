@@ -59,13 +59,20 @@ export default function ComunidadesPage() {
       }
       
       setComunidades(comunidadesData);
-    } catch (err: any) {                                                                      //precisa arrumar este any para fazer o deploy
+    } catch (err: unknown) {
       console.error('Erro ao buscar comunidades:', err);
-      const errorMessage = err.response?.status === 401
-        ? 'Não autorizado. Por favor, faça login para acessar as comunidades.'
-        : err.response?.status === 404
-        ? 'Rota de comunidades não encontrada. Verifique a configuração da API.'
-        : 'Erro ao carregar comunidades. Verifique sua conexão ou tente novamente mais tarde.';
+      
+      let errorMessage = 'Erro ao carregar comunidades. Verifique sua conexão ou tente novamente mais tarde.';
+      
+      if (err && typeof err === 'object' && 'response' in err) {
+        const axiosError = err as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          errorMessage = 'Não autorizado. Por favor, faça login para acessar as comunidades.';
+        } else if (axiosError.response?.status === 404) {
+          errorMessage = 'Rota de comunidades não encontrada. Verifique a configuração da API.';
+        }
+      }
+      
       setError(errorMessage);
       setComunidades([]);
     } finally {

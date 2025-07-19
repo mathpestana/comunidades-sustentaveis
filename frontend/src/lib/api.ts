@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ComunidadeData, MoradorData, IniciativaData, MetricaData } from '@/types'; //necessario arrumar os types e seus usos para conseguir fazer o build do deploy
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -8,6 +7,36 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Tipos para as entidades
+interface ComunidadeData {
+  nome: string;
+  localizacao: string;
+  descricao?: string;
+  dataFundacao?: string;
+  populacao?: number;
+}
+
+interface MoradorData {
+  nome: string;
+  email: string;
+  comunidadeId: number;
+  // Adicione outros campos conforme necessário
+}
+
+interface IniciativaData {
+  nome: string;
+  descricao: string;
+  comunidadeId: number;
+  // Adicione outros campos conforme necessário
+}
+
+interface MetricaData {
+  nome: string;
+  valor: number;
+  comunidadeId: number;
+  // Adicione outros campos conforme necessário
+}
 
 // Interceptor para adicionar token de autenticação
 api.interceptors.request.use(
@@ -53,10 +82,10 @@ export const comunidadesApi = {
   getById: (id: number) => api.get(`/api/comunidades/${id}`),
   
   // Criar nova comunidade
-  create: (data: any) => api.post('/api/comunidades', data),
+  create: (data: ComunidadeData) => api.post('/api/comunidades', data),
   
   // Atualizar comunidade
-  update: (id: number, data: any) => api.put(`/api/comunidades/${id}`, data),
+  update: (id: number, data: Partial<ComunidadeData>) => api.put(`/api/comunidades/${id}`, data),
   
   // Deletar comunidade
   delete: (id: number) => api.delete(`/api/comunidades/${id}`),
@@ -66,8 +95,8 @@ export const comunidadesApi = {
 export const moradoresApi = {
   getAll: () => api.get('/api/moradores'),
   getById: (id: number) => api.get(`/api/moradores/${id}`),
-  create: (data: any) => api.post('/api/moradores', data),
-  update: (id: number, data: any) => api.put(`/api/moradores/${id}`, data),
+  create: (data: MoradorData) => api.post('/api/moradores', data),
+  update: (id: number, data: Partial<MoradorData>) => api.put(`/api/moradores/${id}`, data),
   delete: (id: number) => api.delete(`/api/moradores/${id}`),
 };
 
@@ -75,8 +104,8 @@ export const moradoresApi = {
 export const iniciativasApi = {
   getAll: () => api.get('/api/iniciativas'),
   getById: (id: number) => api.get(`/api/iniciativas/${id}`),
-  create: (data: any) => api.post('/api/iniciativas', data),
-  update: (id: number, data: any) => api.put(`/api/iniciativas/${id}`, data),
+  create: (data: IniciativaData) => api.post('/api/iniciativas', data),
+  update: (id: number, data: Partial<IniciativaData>) => api.put(`/api/iniciativas/${id}`, data),
   delete: (id: number) => api.delete(`/api/iniciativas/${id}`),
 };
 
@@ -84,8 +113,8 @@ export const iniciativasApi = {
 export const metricasApi = {
   getAll: () => api.get('/api/metricas'),
   getById: (id: number) => api.get(`/api/metricas/${id}`),
-  create: (data: any) => api.post('/api/metricas', data),
-  update: (id: number, data: any) => api.put(`/api/metricas/${id}`, data),
+  create: (data: MetricaData) => api.post('/api/metricas', data),
+  update: (id: number, data: Partial<MetricaData>) => api.put(`/api/metricas/${id}`, data),
   delete: (id: number) => api.delete(`/api/metricas/${id}`),
 };
 
